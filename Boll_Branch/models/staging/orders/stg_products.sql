@@ -11,7 +11,7 @@ AS (
 unnested_array
 AS (
 	SELECT p._id AS product_id,
-		p.title AS product_name,
+		p.title AS product_title,
 		p.category AS product_category,
 		p.created_at AS product_created_at,
 		p.updated_at AS product_updated_at,
