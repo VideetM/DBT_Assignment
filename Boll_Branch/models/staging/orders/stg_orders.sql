@@ -28,8 +28,7 @@ AS (
 		o.subtotal,
 		o.total,
 		l.*,
-		o._loaded_at AS order_loaded_at,
-		rn
+		o._loaded_at AS order_loaded_at
 	FROM source_orders o,
 		unnest(line_items) AS l
 	WHERE rn = 1

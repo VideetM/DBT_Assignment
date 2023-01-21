@@ -1,0 +1,31 @@
+version: 2
+
+
+sources:
+  - name: data-recruiting
+    schema: ae_data_challenge_v1
+    tables:
+      - name: orders 
+      - name: products
+      - name: web_events
+
+models:
+  - name: stg_orders
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+  
+  - name: stg_products
+    columns:
+      - name: product_id
+        tests:
+          - not_null
+  
+  - name: stg_web_events
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+
+     
