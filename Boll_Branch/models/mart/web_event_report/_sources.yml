@@ -1,0 +1,57 @@
+
+version: 2
+
+models:
+  - name: web_events_report
+    columns:
+      - name: event_id
+        tests:
+          - not_null
+  
+
+metrics:
+  - name: page_count_metric
+    label: Total Pageviews
+    model: ref('web_events_report')
+    description: "Total number of page views where event is page"
+
+    calculation_method: count
+    expression: event_id 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+
+    filters:
+      - field: event_name
+        operator: '='
+        value: "'page'"
+
+  - name: Total_Web_Users
+    label: Total Web Users
+    model: ref('web_events_report')
+    description: "distinct count of users in web sessions"
+
+    calculation_method: count_distinct
+    expression: customer_id 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+
+    filters:
+      - field: event_name
+        operator: '='
+        value: "'page'"
+        
+  
+
+   

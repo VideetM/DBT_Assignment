@@ -1,0 +1,126 @@
+
+version: 2
+
+models:
+  - name: order_report
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+      - name: product_id
+          - not_null
+  
+
+metrics:
+  - name: total_order_count
+    label: order count
+    model: ref('order_report')
+    description: "Total number of order counts"
+
+    calculation_method: count_distinct
+    expression: order_id 
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - product_category
+      - product_title
+      - product_sku
+      - product_style
+      - product_size
+
+  - name: total_order_units
+    label: total order units
+    model: ref('order_report')
+    description: "total number of order units"
+
+    calculation_method: sum
+    expression: quantity 
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - product_category
+      - product_title
+      - product_sku
+      - product_style
+      - product_size
+      - order_id
+
+  - name: total_line_revenue
+    label: total line revenue
+    model: ref('order_report')
+    description: "total sum of line revenue"
+
+    calculation_method: sum
+    expression: total_line_revenue 
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - product_category
+      - product_title
+      - product_sku
+      - product_style
+      - product_size
+      - order_id
+
+  - name: total_line_discount
+    label: total line discount
+    model: ref('order_report')
+    description: "total sum of line discount"
+
+    calculation_method: sum
+    expression: line_total_discount
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - product_category
+      - product_title
+      - product_sku
+      - product_style
+      - product_size
+      - order_id
+
+  - name: total_revenue
+    label: total revenue
+    description: "total revenue"
+
+    calculation_method: derived
+    expression: "{{metric('total_line_revenue')}} - {{metric('total_line_discount')}}"
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - product_category
+      - product_title
+      - product_sku
+      - product_style
+      - product_size
+      - order_id
+
+  - name: total_gross_revenue
+    label: total gross revenue
+    # model: ref('order_report')
+    description: "total gross revenue"
+
+    calculation_method: derived
+    expression: "{{metric('total_revenue')}}"
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - product_category
+      - product_title
+      - product_sku
+      - product_style
+      - product_size
+      - order_id
+  

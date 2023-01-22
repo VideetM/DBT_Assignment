@@ -1,4 +1,6 @@
 -- depends_on: {{ ref('dbt_metrics_default_calendar') }}
+-- depends_on: {{ ref('web_events_report') }}
+
 {% set my_metric_yml -%}
 
 metrics:
