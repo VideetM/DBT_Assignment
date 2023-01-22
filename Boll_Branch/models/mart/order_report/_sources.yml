@@ -123,4 +123,48 @@ metrics:
       - product_style
       - product_size
       - order_id
-  
+
+  - name: avg_order_unit
+    label: average order units
+    model: ref('order_report')
+    description: "average of total order unit"
+
+    calculation_method: average
+    expression: ROUND(quantity, 2)
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - product_category
+      - product_title
+      - product_sku
+      - product_style
+      - product_size
+      - order_id
+
+
+  - name: avg_order_value
+    label: average order value
+    model: ref('order_report')
+    description: "average of order subtotal"
+
+    calculation_method: average
+    expression: ROUND(subtotal, 2)
+
+    timestamp: order_created_at
+    time_grains: [day, week, month, quarter, year]
+
+    filters:
+    - field: dedupe_subtotal
+      operator: '='
+      value: '1'
+
+    dimensions:
+      - product_category
+      - product_title
+      - product_sku
+      - product_style
+      - product_size
+      - order_id
+    

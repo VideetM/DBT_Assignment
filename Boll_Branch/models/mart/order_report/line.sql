@@ -1,6 +1,6 @@
 select * 
 from {{ metrics.calculate(
-    metric('total_gross_revenue'),
+    metric('avg_order_value'),
     grain='month',
-    dimensions=['product_category']
+    dimensions=['order_id']
 ) }}
