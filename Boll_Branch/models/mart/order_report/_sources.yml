@@ -142,6 +142,7 @@ metrics:
       - product_style
       - product_size
       - order_id
+      - order_created_at
 
 
   - name: avg_order_value

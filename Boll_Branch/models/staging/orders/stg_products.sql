@@ -17,7 +17,6 @@ AS (
 		p.updated_at AS product_updated_at,
 		v.*,
 		p._loaded_at AS product_loaded_at
-    
 	FROM source_products p,
 		unnest(variants) AS v
 	WHERE rn = 1

@@ -1,6 +1,7 @@
-
-with final as (
-SELECT * 
-from {{ ref('int_orders_products') }})
-
-select * from final
+WITH final
+AS (
+	SELECT *
+	FROM {{ ref('int_orders_products') }}
+	)
+SELECT *
+FROM final
