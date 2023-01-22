@@ -1,6 +1,8 @@
+ -- depends_on: {{ ref('dbt_metrics_default_calendar') }}
+ 
 select * 
 from {{ metrics.calculate(
-    metric('avg_order_unit'),
+    metric('total_gross_revenue'),
     grain='month',
-    dimensions=['order_created_at']
+    dimensions=['product_category']
 ) }}

@@ -10,13 +10,13 @@ models:
   
 
 metrics:
-  - name: page_count_metric
-    label: Total Pageviews
+  - name: total_page_views
+    label: total ageviews
     model: ref('web_events_report')
     description: "Total number of page views where event is page"
 
     calculation_method: count
-    expression: event_id 
+    expression: event_url 
 
     timestamp: event_timestamp
     time_grains: [day, week, month, quarter, year]
@@ -25,19 +25,40 @@ metrics:
       - utm_source
       - utm_campaign
       - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+      
 
     filters:
       - field: event_name
         operator: '='
         value: "'page'"
 
-  - name: Total_Web_Users
-    label: Total Web Users
+  - name: Total_Web_sessions
+    label: Total Web sessions
     model: ref('web_events_report')
-    description: "distinct count of users in web sessions"
+    description: "total count of web sessions"
+
+    calculation_method: count
+    expression: global_session_id 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+
+  - name: total_bounced_sessions
+    label: total bounced sesssion
+    model: ref('web_events_report')
+    description: "count of bounced sessions"
 
     calculation_method: count_distinct
-    expression: customer_id 
+    expression: global_session_id 
 
     timestamp: event_timestamp
     time_grains: [day, week, month, quarter, year]
@@ -46,12 +67,253 @@ metrics:
       - utm_source
       - utm_campaign
       - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+  
+    filters:
+      - field: bounced_flag
+        operator: '='
+        value: '1'
+
+
+  - name: total_web_user
+    label: total web users
+    model: ref('web_events_report')
+    description: "count of total web user. if customer id not available use cookie id"
+
+    calculation_method: count_distinct
+    expression: web_user_id 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+  
+  - name: bounce_rate
+    label: bounce rate 
+    description: "Total Bounced Web Sessions divided by Total Web Sessions"
+
+    calculation_method: derived
+    expression: "{{metric('total_bounced_sessions')}} / {{metric('Total_Web_sessions')}}" 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+
+
+  - name: product_view_count
+    label: product view page count
+    model: ref('web_events_report')
+    description: "count of session having 'product_viewed' event"
+
+    calculation_method: count_distinct
+    expression: global_session_id 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+    filters:
+      - field: event_name
+        operator: '='
+        value: "'product_viewed'"
+
+
+  - name: product_view_rate
+    label: product view rate
+    # model: ref('web_events_report')
+    description: "Total web sessions that include a `product_viewed` event divided by total web session"
+
+    calculation_method: derived
+    expression: "{{metric('product_view_count')}} / {{metric('Total_Web_sessions')}}"  
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+
+  - name: add_to_cart_count
+    label: product added to cart page count
+    model: ref('web_events_report')
+    description: "Total session that include a `product_added` event"
+
+    calculation_method: count_distinct
+    expression: global_session_id 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
 
     filters:
       - field: event_name
         operator: '='
-        value: "'page'"
-        
-  
+        value: "'product_added'"
 
-   
+  - name: add_to_cart_rate
+    label: add to cart rate
+    # model: ref('web_events_report')
+    description: "Total web sessions that include a `product_added` event divided by total web session"
+
+    calculation_method: derived
+    expression: "{{metric('add_to_cart_count')}} / {{metric('Total_Web_sessions')}}"  
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+
+  - name: checkout_count
+    label: checkout pages count
+    model: ref('web_events_report')
+    description: "count of session that include `checkout_step_viewed`"
+
+    calculation_method: count_distinct
+    expression: global_session_id 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+
+    filters:
+      - field: event_name
+        operator: '='
+        value: "'checkout_step_viewed'"
+
+  
+  - name: checkout_rate
+    label: checkout rate
+    # model: ref('web_events_report')
+    description: "Total web sessions that include a `checkout_step_viewed` event divided by total web session"
+
+    calculation_method: derived
+    expression: "{{metric('checkout_count')}} / {{metric('Total_Web_sessions')}}"  
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+
+  - name: sign_up_count
+    label: sign up pages count
+    model: ref('web_events_report')
+    description: "count of session that include 'email_sign_up'"
+
+    calculation_method: count_distinct
+    expression: global_session_id 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+
+    filters:
+      - field: event_name
+        operator: '='
+        value: "'email_sign_up'"
+
+  - name: sign_up_rate
+    label: sign up rate
+    # model: ref('web_events_report')
+    description: "Total web sessions that include a `email_sign_up` event divided by total web session"
+
+    calculation_method: derived
+    expression: "{{metric('sign_up_count')}} / {{metric('Total_Web_sessions')}}"  
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+
+  - name: order_complete_count
+    label: counts of order completed
+    model: ref('web_events_report')
+    description: "count of session that include 'order_completed'"
+
+    calculation_method: count_distinct
+    expression: global_session_id 
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
+
+    filters:
+      - field: event_name
+        operator: '='
+        value: "'order_completed'"
+
+  - name: conversion_rate
+    label: conversion rate
+    # model: ref('web_events_report')
+    description: "Total web sessions that include a `order_completed` event divided by total web session"
+
+    calculation_method: derived
+    expression: "{{metric('order_complete_count')}} / {{metric('Total_Web_sessions')}}"  
+
+    timestamp: event_timestamp
+    time_grains: [day, week, month, quarter, year]
+
+    dimensions:
+      - utm_source
+      - utm_campaign
+      - utm_medium
+      - landing_page_timestamp
+      - landing_page_url
