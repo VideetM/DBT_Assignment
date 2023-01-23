@@ -1,8 +1,8 @@
 -- depends_on: {{ ref('dbt_metrics_default_calendar') }}
 select * 
 from {{ metrics.calculate(
-    metric('order_complete_count'),
+    metric('total_web_user'),
     grain='month',
-    dimensions=['utm_medium']
+    dimensions=['utm_campaign']
 ) }}
 

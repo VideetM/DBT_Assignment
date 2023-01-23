@@ -8,6 +8,7 @@ AS (
 		o.order_created_at,
 		p.product_category,
 		product_title,
+		p.product_id,
 		p.sku AS product_sku,
 		p.option1 AS product_style,
 		p.option2 AS product_size,

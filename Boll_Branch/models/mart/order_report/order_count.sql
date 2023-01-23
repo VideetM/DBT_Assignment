@@ -2,9 +2,9 @@
  
 select * 
 from {{ metrics.calculate(
-    metric('total_order_count'),
-    grain='month',
-    dimensions=['product_category']
+    metric('avg_order_unit'),
+    grain='day'
+   
 ) }}
 
 

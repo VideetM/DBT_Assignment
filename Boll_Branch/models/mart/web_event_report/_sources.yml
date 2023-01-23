@@ -113,7 +113,7 @@ metrics:
 
 
   - name: product_view_count
-    label: product view page count
+    label: product view  count
     model: ref('web_events_report')
     description: "count of session having 'product_viewed' event"
 
@@ -154,7 +154,7 @@ metrics:
       - landing_page_url
 
   - name: add_to_cart_count
-    label: product added to cart page count
+    label:  added to cart count
     model: ref('web_events_report')
     description: "Total session that include a `product_added` event"
 
@@ -175,7 +175,7 @@ metrics:
       - field: event_name
         operator: '='
         value: "'product_added'"
-
+ 
   - name: add_to_cart_rate
     label: add to cart rate
     # model: ref('web_events_report')
