@@ -27,7 +27,7 @@ AS (
 				PARTITION BY cookie_id ORDER BY event_timestamp
 				) AS user_session_id,
 			order_id,
-			product_id
+			cast(product_id as int) product_id
 		FROM (
 			SELECT *,
 				CASE 
