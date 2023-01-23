@@ -5,6 +5,8 @@ version: 2
 
 models:
   - name: int_orders_products
+    description: This is join of order and product staging table with logic for deduping subtotal.
+
     columns:
       - name: order_id
         tests:
@@ -14,6 +16,9 @@ models:
           - not_null
 
   - name: int_web_events
+    description: This is table derived from staging webevents table with logic calculating web sessions,
+                 first timestamp and first landing page url 
+
     columns:
       - name: event_id
         tests:

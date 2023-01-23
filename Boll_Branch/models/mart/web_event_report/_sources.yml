@@ -3,6 +3,9 @@ version: 2
 
 models:
   - name: web_events_report
+    description: This is final report(to be exposed to analyst) table consisting metrics,
+                granularity requested by analyst for web event data.
+
     columns:
       - name: event_id
         tests:
@@ -34,8 +37,8 @@ metrics:
         operator: '='
         value: "'page'"
 
-  - name: Total_Web_sessions
-    label: Total Web sessions
+  - name: total_web_sessions
+    label: total Web sessions
     model: ref('web_events_report')
     description: "total count of web sessions"
 
@@ -99,7 +102,7 @@ metrics:
     description: "Total Bounced Web Sessions divided by Total Web Sessions"
 
     calculation_method: derived
-    expression: "{{metric('total_bounced_sessions')}} / {{metric('Total_Web_sessions')}}" 
+    expression: "{{metric('total_bounced_sessions')}} / {{metric('total_web_sessions')}}" 
 
     timestamp: event_timestamp
     time_grains: [day, week, month, quarter, year]
@@ -141,7 +144,7 @@ metrics:
     description: "Total web sessions that include a `product_viewed` event divided by total web session"
 
     calculation_method: derived
-    expression: "{{metric('product_view_count')}} / {{metric('Total_Web_sessions')}}"  
+    expression: "{{metric('product_view_count')}} / {{metric('total_web_sessions')}}"  
 
     timestamp: event_timestamp
     time_grains: [day, week, month, quarter, year]
@@ -182,7 +185,7 @@ metrics:
     description: "Total web sessions that include a `product_added` event divided by total web session"
 
     calculation_method: derived
-    expression: "{{metric('add_to_cart_count')}} / {{metric('Total_Web_sessions')}}"  
+    expression: "{{metric('add_to_cart_count')}} / {{metric('total_web_sessions')}}"  
 
     timestamp: event_timestamp
     time_grains: [day, week, month, quarter, year]
@@ -224,7 +227,7 @@ metrics:
     description: "Total web sessions that include a `checkout_step_viewed` event divided by total web session"
 
     calculation_method: derived
-    expression: "{{metric('checkout_count')}} / {{metric('Total_Web_sessions')}}"  
+    expression: "{{metric('checkout_count')}} / {{metric('total_web_sessions')}}"  
 
     timestamp: event_timestamp
     time_grains: [day, week, month, quarter, year]
@@ -265,7 +268,7 @@ metrics:
     description: "Total web sessions that include a `email_sign_up` event divided by total web session"
 
     calculation_method: derived
-    expression: "{{metric('sign_up_count')}} / {{metric('Total_Web_sessions')}}"  
+    expression: "{{metric('sign_up_count')}} / {{metric('total_web_sessions')}}"  
 
     timestamp: event_timestamp
     time_grains: [day, week, month, quarter, year]
@@ -306,7 +309,7 @@ metrics:
     description: "Total web sessions that include a `order_completed` event divided by total web session"
 
     calculation_method: derived
-    expression: "{{metric('order_complete_count')}} / {{metric('Total_Web_sessions')}}"  
+    expression: "{{metric('order_complete_count')}} / {{metric('total_web_sessions')}}"  
 
     timestamp: event_timestamp
     time_grains: [day, week, month, quarter, year]

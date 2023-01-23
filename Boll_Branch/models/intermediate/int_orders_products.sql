@@ -1,23 +1,33 @@
-WITH order_product_join
+WITH stg_orders
 AS (
-	SELECT o.order_id,
-		o.subtotal,
-		o.quantity,
-		o.price * o.quantity AS total_line_revenue,
-		o.line_total_discount,
-		o.order_created_at,
-		p.product_category,
-		product_title,
-		p.product_id,
-		p.sku AS product_sku,
-		p.option1 AS product_style,
-		p.option2 AS product_size,
+	SELECT *
+	FROM {{ ref('stg_orders') }}
+	),
+stg_products
+AS (
+	SELECT *
+	FROM {{ ref('stg_products') }}
+	),
+order_product_join --joining order and product staging table 
+AS (
+	SELECT orders.order_id,
+		orders.subtotal,
+		orders.quantity,
+		orders.price * orders.quantity AS total_line_revenue,
+		orders.line_total_discount,
+		orders.order_created_at,
+		products.product_category,
+		products.product_title,
+		products.product_id,
+		products.product_sku,
+		products.product_style,
+		products.product_size,
 		row_number() OVER (
 			PARTITION BY order_id ORDER BY order_id
-			) AS dedupe_subtotal
-	FROM {{ ref('stg_orders') }} o
-	INNER JOIN {{ ref('stg_products') }} p ON o.product_id = p.product_id
-		AND o.variant_id = p.variant_id
+			) AS dedupe_subtotal --flag for deduping subtotal 
+	FROM stg_orders orders
+	INNER JOIN stg_products products ON orders.product_id = products.product_id
+		AND orders.variant_id = products.variant_id
 	),
 final
 AS (

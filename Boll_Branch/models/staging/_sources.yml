@@ -11,18 +11,24 @@ sources:
 
 models:
   - name: stg_orders
+    description: This a staging table for orders table and renaming relevant columns
+
     columns:
       - name: order_id
         tests:
           - not_null
   
   - name: stg_products
+    description: This a staging table for products table and renaming relevant columns
+
     columns:
       - name: product_id
         tests:
           - not_null
   
   - name: stg_web_events
+    description: This a staging table for web events table and renaming relevant columns
+    
     columns:
       - name: event_id
         tests:

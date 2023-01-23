@@ -2,7 +2,10 @@
 version: 2
 
 models:
-  - name: order_report
+  - name: orders_report
+    description: This is final report(to be exposed to analyst) table consisting metrics,
+                granularity requested by analyst for order and products.
+
     columns:
       - name: order_id
         tests:
@@ -14,7 +17,7 @@ models:
 metrics:
   - name: total_order_count
     label: order count
-    model: ref('order_report')
+    model: ref('orders_report')
     description: "Total number of order counts"
 
     calculation_method: count_distinct
@@ -32,7 +35,7 @@ metrics:
 
   - name: total_order_units
     label: total order units
-    model: ref('order_report')
+    model: ref('orders_report')
     description: "total number of order units"
 
     calculation_method: sum
@@ -51,7 +54,7 @@ metrics:
 
   - name: total_line_revenue
     label: total line revenue
-    model: ref('order_report')
+    model: ref('orders_report')
     description: "total sum of line revenue"
 
     calculation_method: sum
@@ -70,7 +73,7 @@ metrics:
 
   - name: total_line_discount
     label: total line discount
-    model: ref('order_report')
+    model: ref('orders_report')
     description: "total sum of line discount"
 
     calculation_method: sum
@@ -126,7 +129,7 @@ metrics:
 
   - name: avg_order_unit
     label: average order units
-    model: ref('order_report')
+    model: ref('orders_report')
     description: "average of total order unit"
 
     calculation_method: average
@@ -147,7 +150,7 @@ metrics:
 
   - name: avg_order_value
     label: average order value
-    model: ref('order_report')
+    model: ref('orders_report')
     description: "average of order subtotal"
 
     calculation_method: average
