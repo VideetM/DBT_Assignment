@@ -3,8 +3,8 @@
 ### Project Organization
 I have organized the project in the following way in the model folder:
 
-* ✅ Staging- View of all the source table
-* ✅ Intermediate Layer - Houses logic and transaformation
+* ✅ Staging- View of all the source tables.
+* ✅ Intermediate Layer - Houses logic and transformation.
 * ✅ Mart - Final Reports to be exposed to analyst and business users.
 
 
